@@ -7,7 +7,7 @@ keywords:
   - ai-proxy
   - AI
   - LLM
-description: The ai-proxy Plugin simplifies access to LLM and embedding models providers by converting Plugin configurations into the required request format for OpenAI, DeepSeek, Azure, AIMLAPI, Anthropic, OpenRouter, Gemini, Vertex AI, Amazon Bedrock, and other OpenAI-compatible APIs.
+description: The ai-proxy Plugin simplifies access to LLM and embedding models providers by converting Plugin configurations into the required request format for OpenAI, DeepSeek, Azure, AIMLAPI, Anthropic, OpenRouter, Gemini, Vertex AI, Amazon Bedrock, Cheaper Inference, and other OpenAI-compatible APIs.
 ---
 
 <!--
@@ -38,7 +38,7 @@ import TabItem from '@theme/TabItem';
 
 ## Description
 
-The `ai-proxy` Plugin simplifies access to LLM and embedding models by transforming Plugin configurations into the designated request format. It supports the integration with OpenAI, DeepSeek, Azure, AIMLAPI, Anthropic, OpenRouter, Gemini, Vertex AI, Amazon Bedrock, and other OpenAI-compatible APIs.
+The `ai-proxy` Plugin simplifies access to LLM and embedding models by transforming Plugin configurations into the designated request format. It supports the integration with OpenAI, DeepSeek, Azure, AIMLAPI, Anthropic, OpenRouter, Gemini, Vertex AI, Amazon Bedrock, Cheaper Inference, and other OpenAI-compatible APIs.
 
 In addition, the Plugin also supports logging LLM request information in the access log, such as token usage, model, time to the first response, and more. These log entries are also consumed by logging plugins such as `http-logger` and `kafka-logger`. These options do not affect `error.log`.
 
@@ -67,7 +67,7 @@ When `provider` is set to `bedrock`, the Plugin expects requests in the [Bedrock
 
 | Name               | Type    | Required | Default | Valid values                              | Description |
 |--------------------|--------|----------|---------|------------------------------------------|-------------|
-| provider          | string  | True     |         | [openai, deepseek, azure-openai, aimlapi, anthropic, openrouter, gemini, vertex-ai, bedrock, openai-compatible] | LLM service provider. When set to `openai`, the Plugin will proxy the request to `https://api.openai.com/chat/completions`. When set to `deepseek`, the Plugin will proxy the request to `https://api.deepseek.com/chat/completions`. When set to `aimlapi`, the Plugin uses the OpenAI-compatible driver and proxies the request to `https://api.aimlapi.com/v1/chat/completions` by default. When set to `anthropic`, the Plugin will proxy the request to `https://api.anthropic.com/v1/chat/completions` by default. When set to `openrouter`, the Plugin uses the OpenAI-compatible driver and proxies the request to `https://openrouter.ai/api/v1/chat/completions` by default. When set to `gemini`, the Plugin uses the OpenAI-compatible driver and proxies the request to `https://generativelanguage.googleapis.com/v1beta/openai/chat/completions` by default. When set to `vertex-ai`, the Plugin will proxy the request to `https://aiplatform.googleapis.com` by default and requires `provider_conf` or `override`. When set to `bedrock`, the Plugin will proxy the request to the AWS Bedrock Converse API (`https://bedrock-runtime.<region>.amazonaws.com`) and signs the request with AWS SigV4. When set to `openai-compatible`, the Plugin will proxy the request to the custom endpoint configured in `override`. |
+| provider          | string  | True     |         | [openai, deepseek, azure-openai, aimlapi, anthropic, openrouter, gemini, vertex-ai, bedrock, cheaperinference, openai-compatible] | LLM service provider. When set to `openai`, the Plugin will proxy the request to `https://api.openai.com/chat/completions`. When set to `deepseek`, the Plugin will proxy the request to `https://api.deepseek.com/chat/completions`. When set to `aimlapi`, the Plugin uses the OpenAI-compatible driver and proxies the request to `https://api.aimlapi.com/v1/chat/completions` by default. When set to `anthropic`, the Plugin will proxy the request to `https://api.anthropic.com/v1/chat/completions` by default. When set to `openrouter`, the Plugin uses the OpenAI-compatible driver and proxies the request to `https://openrouter.ai/api/v1/chat/completions` by default. When set to `gemini`, the Plugin uses the OpenAI-compatible driver and proxies the request to `https://generativelanguage.googleapis.com/v1beta/openai/chat/completions` by default. When set to `vertex-ai`, the Plugin will proxy the request to `https://aiplatform.googleapis.com` by default and requires `provider_conf` or `override`. When set to `bedrock`, the Plugin will proxy the request to the AWS Bedrock Converse API (`https://bedrock-runtime.<region>.amazonaws.com`) and signs the request with AWS SigV4. When set to `cheaperinference`, the Plugin uses the OpenAI-compatible driver and proxies the request to `https://api.cheaperinference.com/v1/chat/completions` by default. Each model costs 15–60% less than the list price of its lab. When set to `openai-compatible`, the Plugin will proxy the request to the custom endpoint configured in `override`. |
 | provider_conf      | object  | False    |         |                                          | Configuration for the specific provider. Required when `provider` is set to `vertex-ai` and `override` is not configured. Required when `provider` is set to `bedrock`. |
 | provider_conf.project_id | string | True |       |                                          | Google Cloud Project ID.  |
 | provider_conf.region | string | True (depending on provider) |         | minLength = 1 (for Bedrock)              | When `provider` is `vertex-ai`, this is the Google Cloud Region. When `provider` is `bedrock`, this is the AWS region used to construct the Bedrock endpoint and to sign the request with SigV4 (required, must be non-empty). |
@@ -117,6 +117,7 @@ The table below shows, for each `provider` and target API endpoint, the upstream
 | `deepseek`          | `max_tokens`                 | —                      | —                  |
 | `aimlapi`           | `max_tokens`                 | —                      | —                  |
 | `openrouter`        | `max_tokens`                 | —                      | —                  |
+| `cheaperinference`  | `max_tokens`                 | —                      | —                  |
 | `gemini`            | `max_completion_tokens`      | —                      | —                  |
 | `vertex-ai`         | `max_completion_tokens`      | —                      | —                  |
 | `anthropic`         | `max_tokens`                 | —                      | `max_tokens`       |
